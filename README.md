@@ -5,7 +5,7 @@ django-knockout-modeler
 
 Super easy knockout.js ModelView templates for you Django models
 
-* django-knockout-modeler turns this:
+    django-knockout-modeler turns this:
 
     ```python
     class MyObjectViewModel(models.Model):
@@ -13,7 +13,7 @@ Super easy knockout.js ModelView templates for you Django models
         myName = models.CharField()
     ```
 
-* into this:
+    into this:
 
     ```javascript
         MyObjectViewModel = {
@@ -22,8 +22,8 @@ Super easy knockout.js ModelView templates for you Django models
         }
 
 
-        MyObjectViewModel.myNumber.subscribe(function(newValue) { // });
-        MyObjectViewModel.myName.subscribe(function(newValue) { // });
+        MyObjectViewModel.myNumber.subscribe(function(newValue) { });
+        MyObjectViewModel.myName.subscribe(function(newValue) { });
     ```
 
 Quick start
