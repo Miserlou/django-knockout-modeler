@@ -1,4 +1,4 @@
-![Django knockout!](http://i.imgur.com/JOBuh4u.gif)
+![Django knockout!](http://i.imgur.com/U9M2AXp.gif)
 
 django-knockout-modeler
 ==============
