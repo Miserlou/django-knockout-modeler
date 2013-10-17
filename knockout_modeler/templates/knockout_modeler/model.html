@@ -1,0 +1,3 @@
+{{modelName}}ViewModel = {
+    {% for fieldName in fields %}{{fieldName}}: ko.observable(){% if not forloop.last %},{%endif%}{% endfor %}
+}{% for fieldName in fields %}{{modelName}}.{{fieldName}}.subscribe(function(newValue) { // });{% endfor %}
