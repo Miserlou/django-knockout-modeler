@@ -8,7 +8,7 @@ Super easy knockout.js ModelView templates for you Django models
 * django-knockout-modeler turns this:
 
     ```python
-    class MyObjectViewModel(models.Model):
+    class MyObject(models.Model):
         myNumber = models.IntegerField()
         myName = models.CharField()
 
