@@ -12,14 +12,14 @@ def koModel(model, field_names=None, data=None):
     else:
         fields = model._meta.get_all_field_names()
 
-    modelViewString = render_to_string("model.html", {'modelName': modelName, 'fields': fields, 'data': data} )
+    modelViewString = render_to_string("knockout_modeler/model.html", {'modelName': modelName, 'fields': fields, 'data': data} )
 
     return modelViewString
 
 def koData(queryset, field_names):
 
     modelName = queryset[0].__class__.__name__
-    modelDataString = render_to_string("data.html", {'modelName': modelName, 'queryset': queryset, 'field_names': field_names} )
+    modelDataString = render_to_string("knockout_modeler/data.html", {'modelName': modelName, 'queryset': queryset, 'field_names': field_names} )
 
     return modelDataString
 
