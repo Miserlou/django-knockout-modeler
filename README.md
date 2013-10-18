@@ -11,19 +11,40 @@ Super easy knockout.js ModelView templates for you Django models
     class MyObjectViewModel(models.Model):
         myNumber = models.IntegerField()
         myName = models.CharField()
+
     ```
 
 * into this:
 
     ```javascript
-        MyObjectViewModel = {
-            myNumber: ko.observable(),
-            myName: ko.observable(),
+        var MyObjectData = [{   
+            "myNumber": 666,
+            "myName": "Gabe Newell"
+        }];
+        
+        function MyObject(data) {
+            myNumber = ko.observable(),
+            myName = ko.observable()
         }
 
+        function MyObjectViewModel() { 
+            var self = this;
+            self.myobjects = ko.observableArray(ContractJobData);
 
-        MyObjectViewModel.myNumber.subscribe(function(newValue) { });
-        MyObjectViewModel.myName.subscribe(function(newValue) { });
+            self.addmyobject = function() {
+                self.myobjects.push(new MyObject({ }));
+            };
+            self.removeMyObject = function(myobject){ self.myobjects.remove(myobject) };
+
+        }
+
+        ko.applyBindings(new MyObjectViewModel());
+    ```
+
+* with just this!
+
+    ```python
+    {{ myContacts|knockout }}
     ```
 
 Quick start
