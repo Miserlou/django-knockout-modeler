@@ -83,7 +83,7 @@ To get the data object by itself, you can do this:
 Similarly, you can get just the model, if you prefer to load your data from apis, like this: 
 
 ```django
-{{ myObjects | knockout_data }}
+{{ myObjects | knockout_model }}
 ```
 
 Progammatic Usage
