@@ -3,9 +3,9 @@
 django-knockout-modeler
 ==============
 
-'''django-knockout-modeler''' makes it super easy to use knockout.js with your Django models. It's great for project with objects that have lots of different models, or models with lots of different fields, or both. It can be used in both prototyping complex applications and directly in the templates of simple ones.
+**django-knockout-modeler** makes it super easy to use knockout.js with your Django models. It's great for project with objects that have lots of different models, or models with lots of different fields, or both. It can be used in both prototyping complex applications and directly in the templates of simple ones.
 
-* '''django-knockout-modeler''' turns this:
+* **django-knockout-modeler** turns this:
 
     ```python
     class MyObject(models.Model):
@@ -31,7 +31,7 @@ django-knockout-modeler
         var self = this;
         self.myobjects = ko.observableArray(ContractJobData);
 
-        self.addmyobject = function() {
+        self.addMyObject = function() {
             self.myobjects.push(new MyObject({ }));
         };
         self.removeMyObject = function(myobject){ self.myobjects.remove(myobject) };
@@ -64,23 +64,56 @@ Quick start
       'knockout-modeler',
     )
     ```
+
 Simple Usage
 ---------
 
+**django-knockout-modeler** can be used directly in templates to generate knockout models and knockout-ready data, or either one you choose. To put a QuerySet directly into a django template as a Knockout object, you can do this:
 
+    ```django
+    {{ myObjects | knockout }}
+    ```
 
-Custom Usage
+To get the data object by itself, you can do this: 
+
+    ```django
+    {{ myObjects | knockout_data }}
+    ```
+
+Similarly, you can get just the model, if you prefer to load your data from apis, like this: 
+
+    ```django
+    {{ myObjects | knockout_data }}
+    ```
+
+Progammatic Usage
 ---------
 
 1. Import it!
 
     ```python
-    import knockout_modeler.ko
+    from knockout_modeler.ko import ko, koData, koModel
     ```
 
 2. Pass it a model!
 
     ```python
-    koString = ko.koModel(YourModel)
+    koString = ko(YourModel)
     ```
 
+2. Pass it a model!
+
+    ```python
+    koString = ko(YourModel)
+    ```
+
+2. Pass it a model!
+
+    ```python
+    koString = ko(YourModel)
+    ```
+
+Filtering
+----------
+
+If you don't want to expose your entire model to the object
