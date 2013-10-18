@@ -36,7 +36,6 @@ function MyObjectViewModel() {
         self.myobjects.push(new MyObject({ }));
     };
     self.removeMyObject = function(myobject){ self.myobjects.remove(myobject) };
-
 }
 
 ko.applyBindings(new MyObjectViewModel());
@@ -118,7 +117,7 @@ Custom fieldsets are also allowed:
 ```python
 fields = ['custom', 'fieldset', 'allowed']
 koString = ko(entries, fields)
-```python
+```
 
 Filtering
 ----------
