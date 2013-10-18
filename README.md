@@ -17,28 +17,28 @@ Super easy knockout.js ModelView templates for you Django models
 * into this:
 
     ```javascript
-        var MyObjectData = [{   
-            "myNumber": 666,
-            "myName": "Gabe Newell"
-        }];
-        
-        function MyObject(data) {
-            myNumber = ko.observable(),
-            myName = ko.observable()
-        }
+    var MyObjectData = [{   
+        "myNumber": 666,
+        "myName": "Gabe Newell"
+    }];
+    
+    function MyObject(data) {
+        myNumber = ko.observable(),
+        myName = ko.observable()
+    }
 
-        function MyObjectViewModel() { 
-            var self = this;
-            self.myobjects = ko.observableArray(ContractJobData);
+    function MyObjectViewModel() { 
+        var self = this;
+        self.myobjects = ko.observableArray(ContractJobData);
 
-            self.addmyobject = function() {
-                self.myobjects.push(new MyObject({ }));
-            };
-            self.removeMyObject = function(myobject){ self.myobjects.remove(myobject) };
+        self.addmyobject = function() {
+            self.myobjects.push(new MyObject({ }));
+        };
+        self.removeMyObject = function(myobject){ self.myobjects.remove(myobject) };
 
-        }
+    }
 
-        ko.applyBindings(new MyObjectViewModel());
+    ko.applyBindings(new MyObjectViewModel());
     ```
 
 * with just this!
