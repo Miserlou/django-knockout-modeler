@@ -1,7 +1,6 @@
 from django import template
 import simplejson as json
 import datetime
-import inspect
 from knockout_modeler.ko import ko, koData, koModel
 
 register = template.Library()
