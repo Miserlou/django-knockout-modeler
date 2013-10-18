@@ -5,47 +5,47 @@ django-knockout-modeler
 
 **django-knockout-modeler** makes it super easy to use knockout.js with your Django models. It's great for project with objects that have lots of different models, or models with lots of different fields, or both. It can be used in both prototyping complex applications and directly in the templates of simple ones.
 
-* **django-knockout-modeler** turns this:
+**django-knockout-modeler** turns this:
 
-    ```python
-    class MyObject(models.Model):
-        myNumber = models.IntegerField()
-        myName = models.CharField()
+```python
+class MyObject(models.Model):
+    myNumber = models.IntegerField()
+    myName = models.CharField()
 
-    ```
+```
 
-* into this:
+into this:
 
-    ```javascript
-    var MyObjectData = [{   
-        "myNumber": 666,
-        "myName": "Gabe Newell"
-    }];
-    
-    function MyObject(data) {
-        myNumber = ko.observable(),
-        myName = ko.observable()
-    }
+```javascript
+var MyObjectData = [{   
+    "myNumber": 666,
+    "myName": "Gabe Newell"
+}];
 
-    function MyObjectViewModel() { 
-        var self = this;
-        self.myobjects = ko.observableArray(ContractJobData);
+function MyObject(data) {
+    myNumber = ko.observable(),
+    myName = ko.observable()
+}
 
-        self.addMyObject = function() {
-            self.myobjects.push(new MyObject({ }));
-        };
-        self.removeMyObject = function(myobject){ self.myobjects.remove(myobject) };
+function MyObjectViewModel() { 
+    var self = this;
+    self.myobjects = ko.observableArray(ContractJobData);
 
-    }
+    self.addMyObject = function() {
+        self.myobjects.push(new MyObject({ }));
+    };
+    self.removeMyObject = function(myobject){ self.myobjects.remove(myobject) };
 
-    ko.applyBindings(new MyObjectViewModel());
-    ```
+}
+
+ko.applyBindings(new MyObjectViewModel());
+```
 
 * with just this!
 
-    ```django
-    {{ myObjects | knockout }}
-    ```
+```django
+{{ myObjects | knockout }}
+```
 
 Quick start
 ------------
@@ -70,48 +70,54 @@ Simple Usage
 
 **django-knockout-modeler** can be used directly in templates to generate knockout models and knockout-ready data, or either one you choose. To put a QuerySet directly into a django template as a Knockout object, you can do this:
 
-    ```django
-    {{ myObjects | knockout }}
-    ```
+```django
+{{ myObjects | knockout }}
+```
 
 To get the data object by itself, you can do this: 
 
-    ```django
-    {{ myObjects | knockout_data }}
-    ```
+```django
+{{ myObjects | knockout_data }}
+```
 
 Similarly, you can get just the model, if you prefer to load your data from apis, like this: 
 
-    ```django
-    {{ myObjects | knockout_data }}
-    ```
+```django
+{{ myObjects | knockout_data }}
+```
 
 Progammatic Usage
 ---------
 
-1. Import it!
+First, import it!
 
-    ```python
-    from knockout_modeler.ko import ko, koData, koModel
-    ```
+```python
+from knockout_modeler.ko import ko, koData, koModel
+```
 
-2. Pass it a model!
+To get the whole template, you can do this:
 
-    ```python
-    koString = ko(YourModel)
-    ```
+```python
+koString = ko(YourModel)
+```
 
-2. Pass it a model!
+And to get just the data string you can do this..
 
-    ```python
-    koString = ko(YourModel)
-    ```
+```python
+koString = koData(YourModel)
+```
 
-2. Pass it a model!
+And, surprisingly, you can do the same for the model string:
 
-    ```python
-    koString = ko(YourModel)
-    ```
+```python
+koString = koModel(YourModel)
+```
+
+Custom fieldsets are also allowed:
+```python
+fields = ['custom', 'fieldset', 'allowed']
+koString = ko(entries, fields)
+```python
 
 Filtering
 ----------
@@ -126,6 +132,6 @@ If you don't want to expose your entire model to Knockout, you can define a func
 by default, it uses the keys in the object's __to_dict()__ method.
 
 Issues
-======
+-------
 
 There's probably a lot more that can be done to improve this. Please file issues if you find them!
