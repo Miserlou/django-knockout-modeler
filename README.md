@@ -116,4 +116,16 @@ Progammatic Usage
 Filtering
 ----------
 
-If you don't want to expose your entire model to the object
+If you don't want to expose your entire model to Knockout, you can define a function in your model:
+
+```python
+    def knockout_fields(self):
+        return['name', 'number']
+```
+
+by default, it uses the keys in the object's __to_dict()__ method.
+
+Issues
+======
+
+There's probably a lot more that can be done to improve this. Please file issues if you find them!
