@@ -12,6 +12,8 @@ class MyObject(models.Model):
     myNumber = models.IntegerField()
     myName = models.CharField()
 
+myObjects = MyObject.objects.all()
+
 ```
 
 into this:
