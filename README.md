@@ -30,7 +30,7 @@ function MyObject(data) {
 
 function MyObjectViewModel() { 
     var self = this;
-    self.myobjects = ko.observableArray(ContractJobData);
+    self.myobjects = ko.observableArray(MyObjectData);
 
     self.addMyObject = function() {
         self.myobjects.push(new MyObject({ }));
@@ -125,8 +125,8 @@ Filtering
 If you don't want to expose your entire model to Knockout, you can define a function in your model:
 
 ```python
-    def knockout_fields(self):
-        return['name', 'number']
+def knockout_fields(self):
+    return['name', 'number']
 ```
 
 by default, it uses the keys in the object's __to_dict()__ method.
