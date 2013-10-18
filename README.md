@@ -3,9 +3,9 @@
 django-knockout-modeler
 ==============
 
-Super easy knockout.js ModelView templates for you Django models
+'''django-knockout-modeler''' makes it super easy to use knockout.js with your Django models. It's great for project with objects that have lots of different models, or models with lots of different fields, or both. It can be used in both prototyping complex applications and directly in the templates of simple ones.
 
-* django-knockout-modeler turns this:
+* '''django-knockout-modeler''' turns this:
 
     ```python
     class MyObject(models.Model):
@@ -43,8 +43,8 @@ Super easy knockout.js ModelView templates for you Django models
 
 * with just this!
 
-    ```python
-    {{ myContacts|knockout }}
+    ```django
+    {{ myObjects | knockout }}
     ```
 
 Quick start
@@ -56,7 +56,7 @@ Quick start
     pip install django-knockout-modeler
     ```
 
-1. Add "welcome" to your INSTALLED_APPS setting like this:
+1. Add 'knockout-modeler' to your INSTALLED_APPS setting like this:
 
     ```python
     INSTALLED_APPS = (
@@ -64,8 +64,12 @@ Quick start
       'knockout-modeler',
     )
     ```
+Simple Usage
+---------
 
-Usage
+
+
+Custom Usage
 ---------
 
 1. Import it!
