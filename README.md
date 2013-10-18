@@ -13,7 +13,6 @@ class MyObject(models.Model):
     myName = models.CharField()
 
 myObjects = MyObject.objects.all()
-
 ```
 
 into this:
@@ -43,7 +42,7 @@ function MyObjectViewModel() {
 ko.applyBindings(new MyObjectViewModel());
 ```
 
-* with just this!
+with just this!
 
 ```django
 {{ myObjects | knockout }}
