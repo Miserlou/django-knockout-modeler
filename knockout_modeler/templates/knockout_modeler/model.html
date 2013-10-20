@@ -6,8 +6,8 @@ function {{modelName}}ViewModel() {
     var self = this;
     self.{{modelName|lower}}s = ko.observableArray({%if data%}{{modelName}}Data{%else%}[]{%endif%});
 
-    self.add{{modelName}} = function() {
-        self.{{modelName}}s.push(new {{modelName}}({ }));
+		self.add{{modelName}} = function({{modelname}}) {
+		self.{{modelName|lower}}s.push({{modelname}});
     };
     self.remove{{modelName}} = function({{modelName|lower}}){ self.{{modelName|lower}}s.remove({{modelName|lower}}) };
 
