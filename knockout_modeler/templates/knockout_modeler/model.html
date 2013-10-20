@@ -6,10 +6,22 @@ function {{modelName}}ViewModel() {
     var self = this;
     self.{{modelName|lower}}s = ko.observableArray({%if data%}{{modelName}}Data{%else%}[]{%endif%});
 
-		self.add{{modelName}} = function({{modelname}}) {
-		self.{{modelName|lower}}s.push({{modelname}});
-    };
-    self.remove{{modelName}} = function({{modelName|lower}}){ self.{{modelName|lower}}s.remove({{modelName|lower}}) };
+		self.add{{modelName}} = function({{modelName|lower}}) {
+				self.{{modelName|lower}}s.push({{modelName|lower}});
+		};
+		self.remove{{modelName}} = function({{modelName|lower}}){
+				self.{{modelName|lower}}s.remove({{modelName|lower}})
+		};
+		self.sortAsc{{modelName}} = function(){
+				this.{{modelName|lower}}s(this.{{modelName|lower}}s().sort(function(a, b) {
+                	return a>b?-1:a<b?1:0;
+			    ));
+		};
+		self.sortDesc{{modelName}} = function(){
+				this.{{modelName|lower}}s(this.{{modelName|lower}}s().sort(function(a, b) {
+                	return a<b?-1:a>b?1:0;
+			    ));
+		};
 
 }
 
