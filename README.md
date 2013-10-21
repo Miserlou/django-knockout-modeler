@@ -41,12 +41,12 @@ function MyObjectViewModel() {
     self.sortMyObjectsAsc = function(){
         self.myobjects(self.myobjects().sort(function(a, b) {
             return a.myNumber>b.myNumber?-1:a.myNumber<b.myNumber?1:0;
-        ));
+        }));
     };
     self.sortMyObjectsDesc = function(){
         self.myobjects(self.myobjects().sort(function(a, b) {
             return a.myNumber<b.myNumber?-1:a.myNumber>b.myNumber?1:0;
-        ));
+        }));
     };
 
 }

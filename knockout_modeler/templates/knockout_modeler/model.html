@@ -15,12 +15,12 @@ function {{modelName}}ViewModel() {
 	self.sort{{modelName}}sAsc = function(){
 		self.{{modelName|lower}}s(self.{{modelName|lower}}s().sort(function(a, b) {
             return a.{{comparator}}>b.{{comparator}}?-1:a.{{comparator}}<b.{{comparator}}?1:0;
-		    ));
+		    }));
 	};
 	self.sort{{modelName}}sDesc = function(){
 		self.{{modelName|lower}}s(self.{{modelName|lower}}s().sort(function(a, b) {
             return a.{{comparator}}<b.{{comparator}}?-1:a.{{comparator}}>b.{{comparator}}?1:0;
-		    ));
+		    }));
 	};
 }
 
