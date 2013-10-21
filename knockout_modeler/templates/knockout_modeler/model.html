@@ -14,15 +14,14 @@ function {{modelName}}ViewModel() {
 		};
 		self.sortAsc{{modelName}} = function(){
 				this.{{modelName|lower}}s(this.{{modelName|lower}}s().sort(function(a, b) {
-                	return a>b?-1:a<b?1:0;
+                	return a.{{comparator}}>b.{{comparator}}?-1:a.{{comparator}}<b.{{comparator}}?1:0;
 			    ));
 		};
 		self.sortDesc{{modelName}} = function(){
 				this.{{modelName|lower}}s(this.{{modelName|lower}}s().sort(function(a, b) {
-                	return a<b?-1:a>b?1:0;
+                	return a.{{comparator}}<b.{{comparator}}?-1:a.{{comparator}}>b.{{comparator}}?1:0;
 			    ));
 		};
-
 }
 
 ko.applyBindings(new {{modelName}}ViewModel());

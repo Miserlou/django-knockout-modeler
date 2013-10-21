@@ -17,7 +17,12 @@ def koModel(model, field_names=None, data=None):
         else:
             fields = model.to_dict().keys()
 
-    modelViewString = render_to_string("knockout_modeler/model.html", {'modelName': modelName, 'fields': fields, 'data': data} )
+    if hasattr(model, "comparator"):
+        comparator = str(model.comparator())
+    else:
+        comparator = 'id' 
+
+    modelViewString = render_to_string("knockout_modeler/model.html", {'modelName': modelName, 'fields': fields, 'data': data, 'comparator': comparator} )
 
     return modelViewString
 
