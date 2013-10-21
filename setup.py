@@ -8,7 +8,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-knockout-modeler',
-    version='0.4.2',
+    version='0.4.3',
     packages=['knockout_modeler'],
     install_requires=[
     ],

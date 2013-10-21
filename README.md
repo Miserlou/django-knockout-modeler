@@ -48,7 +48,6 @@ function MyObjectViewModel() {
             return a.myNumber<b.myNumber?-1:a.myNumber>b.myNumber?1:0;
         }));
     };
-
 }
 
 ko.applyBindings(new MyObjectViewModel());
