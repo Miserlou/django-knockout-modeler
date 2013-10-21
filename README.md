@@ -119,7 +119,7 @@ fields = ['custom', 'fieldset', 'allowed']
 koString = ko(entries, fields)
 ```
 
-Filtering
+Access Control
 ----------
 
 If you don't want to expose your entire model to Knockout, you can define a function in your model:
@@ -130,6 +130,18 @@ def knockout_fields(self):
 ```
 
 by default, it uses the keys in the object's __to_dict()__ method.
+
+Sorting
+----------
+
+django-knockout provides some convenient methods for sorting your data. By default, it will use the object's 'id' field, but you can also define your own comparator like so:
+
+```python
+def comparator(self):
+    return 'value'
+```
+
+If you don't define a comparator, 'id' must be in your knockout_fields.
 
 Issues
 -------
