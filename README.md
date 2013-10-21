@@ -32,18 +32,18 @@ function MyObjectViewModel() {
     var self = this;
     self.myobjects = ko.observableArray(MyObjectData);
 
-    self.addMyObject = function() {
-        self.myobjects.push(new MyObject({ }));
+    self.addMyObject = function(myobject) {
+        self.myobjects.push(myobject);
     };
     self.removeMyObject = function(myobject){ 
         self.myobjects.remove(myobject) 
     };
-    self.sortMyObjectsAsc = function(contractjob){
+    self.sortMyObjectsAsc = function(){
         self.myobjects(self.myobjects().sort(function(a, b) {
             return a.id>b.id?-1:a.id<b.id?1:0;
         ));
     };
-    self.sortMyObjectsDesc = function(contractjob){
+    self.sortMyObjectsDesc = function(){
         self.myobjects(self.myobjects().sort(function(a, b) {
             return a.id<b.id?-1:a.id>b.id?1:0;
         ));
