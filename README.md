@@ -35,7 +35,20 @@ function MyObjectViewModel() {
     self.addMyObject = function() {
         self.myobjects.push(new MyObject({ }));
     };
-    self.removeMyObject = function(myobject){ self.myobjects.remove(myobject) };
+    self.removeMyObject = function(myobject){ 
+        self.myobjects.remove(myobject) 
+    };
+    self.sortMyObjectsAsc = function(contractjob){
+        self.myobjects(self.myobjects().sort(function(a, b) {
+            return a.id>b.id?-1:a.id<b.id?1:0;
+        ));
+    };
+    self.sortMyObjectsDesc = function(contractjob){
+        self.myobjects(self.myobjects().sort(function(a, b) {
+            return a.id<b.id?-1:a.id>b.id?1:0;
+        ));
+    };
+
 }
 
 ko.applyBindings(new MyObjectViewModel());
@@ -137,6 +150,7 @@ Sorting
 django-knockout provides some convenient methods for sorting your data. By default, it will use the object's 'id' field, but you can also define your own comparator like so:
 
 ```python
+@classmethod
 def comparator(self):
     return 'value'
 ```
