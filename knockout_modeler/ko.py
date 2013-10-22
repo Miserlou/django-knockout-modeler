@@ -15,7 +15,10 @@ def koModel(model, field_names=None, data=None):
         if hasattr(model, "knockout_fields"):
             fields = model.knockout_fields()
         else:
-            fields = model.to_dict().keys()
+            try:
+                fields = model.to_dict().keys()
+            except Exception, e:
+                fields = model._meta.fields
 
     if hasattr(model, "comparator"):
         comparator = str(model.comparator())
@@ -37,7 +40,10 @@ def koData(queryset, field_names):
         if hasattr(model, "knockout_fields"):
             fields = model.knockout_fields()
         else:
-            fields = model.to_dict().keys()
+            try:
+                fields = model.to_dict().keys()
+            except Exception, e:
+                fields = model._meta.fields
 
     for obj in queryset:
         temp_dict = dict()
