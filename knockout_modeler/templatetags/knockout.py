@@ -1,7 +1,7 @@
-from django import template
+dfrom django import template
 import simplejson as json
 import datetime
-from knockout_modeler.ko import ko, koData, koModel
+from knockout_modeler.ko import ko, koData, koModel, get_fields
 
 register = template.Library()
 
@@ -14,7 +14,10 @@ def knockout(values):
     if hasattr(modelClass, "knockout_fields"):
         field_names = values[0].knockout_fields()
     else:
-        field_names = values[0].to_dict().keys()
+        try:
+            fields = model.to_dict().keys()
+        except Exception, e:
+            fields = model._meta.fields
 
     return ko(values, field_names)
 
@@ -40,7 +43,10 @@ def knockout_model(values):
     if hasattr(modelClass, "knockout_fields"):
         field_names = values[0].knockout_fields()
     else:
-        field_names = values[0].to_dict().keys()
+        try:
+            fields = model.to_dict().keys()
+        except Exception, e:
+            fields = model._meta.fields
 
     return koModel(modelClass, field_names)
 

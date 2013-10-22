@@ -2,6 +2,18 @@ from django.template.loader import render_to_string
 import simplejson as json
 import datetime
 
+def get_fields(model):
+    if hasattr(model, "knockout_fields"):
+        fields = model.knockout_fields()
+    else:
+        try:
+            fields = model.to_dict().keys()
+        except Exception, e:
+            fields = model._meta.fields
+
+    return fields
+
+
 def koModel(model, field_names=None, data=None):
 
     if type(model) == str:
@@ -12,13 +24,7 @@ def koModel(model, field_names=None, data=None):
     if field_names:
         fields = field_names
     else:
-        if hasattr(model, "knockout_fields"):
-            fields = model.knockout_fields()
-        else:
-            try:
-                fields = model.to_dict().keys()
-            except Exception, e:
-                fields = model._meta.fields
+        fields = get_fields(model)
 
     if hasattr(model, "comparator"):
         comparator = str(model.comparator())
