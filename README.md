@@ -141,7 +141,7 @@ def knockout_fields(self):
     return['name', 'number']
 ```
 
-by default, it uses the keys in the object's __to_dict()__ method.
+by default, it uses the keys in the object's __to_dict()__ method. For computed properties, you can use python's __property__ function.
 
 Sorting
 ----------
