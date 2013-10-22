@@ -3,16 +3,21 @@ import simplejson as json
 import datetime
 
 def get_fields(model):
-    if hasattr(model, "knockout_fields"):
-        fields = model.knockout_fields()
-    else:
-        try:
-            fields = model.to_dict().keys()
-        except Exception, e:
-            fields = model._meta.fields
 
-    return fields
+    try:
+        if hasattr(model, "knockout_fields"):
+            fields = model.knockout_fields()
+        else:
+            try:
+                fields = model.to_dict().keys()
+            except Exception, e:
+                fields = model._meta.get_all_field_names()
 
+        return fields
+
+    # Crash proofing
+    except Exception, e:
+        return []
 
 def koModel(model, field_names=None, data=None):
 
@@ -35,6 +40,16 @@ def koModel(model, field_names=None, data=None):
 
     return modelViewString
 
+def koBindings(model):
+
+    if type(model) == str:
+        modelName = model
+    else:
+        modelName = model.__class__.__name__
+
+    modelBindingsString = "ko.applyBindings(new " + modelName + "ViewModel(), $('#" + modelName.lower() + "s'));"
+    return modelBindingsString
+
 def koData(queryset, field_names):
 
     modelName = queryset[0].__class__.__name__    
@@ -43,18 +58,15 @@ def koData(queryset, field_names):
     if field_names:
         fields = field_names
     else:
-        if hasattr(model, "knockout_fields"):
-            fields = model.knockout_fields()
-        else:
-            try:
-                fields = model.to_dict().keys()
-            except Exception, e:
-                fields = model._meta.fields
+        fields = get_fields(model)
 
     for obj in queryset:
         temp_dict = dict()
         for field in fields:
-            temp_dict[field] = getattr(obj, field)
+            try:
+                temp_dict[field] = getattr(obj, str(field))
+            except Exception, e:
+                continue
         modelNameData.append(temp_dict)
 
     dthandler = lambda obj: obj.isoformat() if isinstance(obj, datetime.datetime)  or isinstance(obj, datetime.date) else None
@@ -64,7 +76,8 @@ def ko(queryset, field_names):
 
     koDataString = koData(queryset, field_names)
     koModelString = koModel(queryset[0].__class__.__name__, field_names, data=True)
+    koBindingsString = koBindings(queryset[0])
 
-    koString = koDataString + '\n' + koModelString
+    koString = koDataString + '\n' + koModelString + '\n' + koBindingsString
 
     return koString

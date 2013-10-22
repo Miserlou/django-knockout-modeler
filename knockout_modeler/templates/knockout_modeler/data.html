@@ -1,6 +1,0 @@
-{% load get_json_value %}
-var {{modelName}}Data = [{% for item in queryset %}{
-    {% for field in field_names %}
-    "{{field}}": {{item|get_json_value:field|safe}}{% if not forloop.last %},{%endif%}{% endfor %}
-}{% if not forloop.last %},{%endif%}
-{%endfor%}];

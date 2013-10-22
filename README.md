@@ -50,7 +50,7 @@ function MyObjectViewModel() {
     };
 }
 
-ko.applyBindings(new MyObjectViewModel());
+ko.applyBindings(new MyObjectViewModel(), $('#myobjects'));
 ```
 
 with just this!
@@ -155,6 +155,27 @@ def comparator(self):
 ```
 
 If you don't define a comparator, 'id' must be in your knockout_fields.
+
+Multi-Model Support
+----------
+
+django-knockout is all ready set up to be used with multiple types of data at the same time, as bindings happen to specific objects:
+
+```javascript
+ko.applyBindings(new MyObjectViewModel(), $('#myobjects'));
+```
+
+which means that you somewhere in your HTML template, you will need to have an object with that id, like so:
+
+```html
+<div id="myobjects">
+    <div data-bind="foreach: myobjects">
+        User <span data-bind="text: myName"></span> is number <span data-bind="text: myNumber"></span>.
+    </div>
+</div>
+```
+
+This is handy for prototyping, but more advanced applications may want to use the [master ViewModel](http://stackoverflow.com/a/9294752/1135467) technique instead.
 
 Issues
 -------
