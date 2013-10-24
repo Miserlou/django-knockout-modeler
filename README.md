@@ -98,6 +98,12 @@ Similarly, you can get just the model, if you prefer to load your data from apis
 {{ myObjects | knockout_model }}
 ```
 
+And even just the bindings:
+
+```django
+{{ myObjects | knockout_bindings }}
+```
+
 Progammatic Usage
 ---------
 
