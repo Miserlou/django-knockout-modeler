@@ -47,7 +47,7 @@ def koBindings(model):
     else:
         modelName = model.__class__.__name__
 
-    modelBindingsString = "ko.applyBindings(new " + modelName + "ViewModel(), $('#" + modelName.lower() + "s'));"
+    modelBindingsString = "ko.applyBindings(new " + modelName + "ViewModel(), $('#" + modelName.lower() + "s')[0]);"
     return modelBindingsString
 
 def koData(queryset, field_names):

@@ -50,13 +50,13 @@ function MyObjectViewModel() {
     };
 }
 
-ko.applyBindings(new MyObjectViewModel(), $('#myobjects'));
+ko.applyBindings(new MyObjectViewModel(), $('#myobjects')[0]);
 ```
 
 with just this!
 
 ```django
-{{ myObjects | knockout }}
+{{ myObjects|knockout }}
 ```
 
 Quick start
@@ -75,6 +75,39 @@ Quick start
       ...
       'knockout-modeler',
     )
+    ```
+
+2. Include Knockout.js in your HTML:
+
+    ```html
+    <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/knockout/2.3.0/knockout-min.js'></script>
+    ```
+
+4. Knockout your QuerySet:
+
+    ```html   
+    <script>
+        {{ myObjects|knockout }}
+    </script>
+    ```
+
+5. Template your results:
+
+    ```html
+    <script type="text/html" id="myTemplate">
+        <div>
+            <h2><span data-bind="text: myName"></span></h2>
+            <h3><span data-bind="text: myNumber"></span></h3>
+        </div>
+    </script> 
+    ```
+
+6. Loop over your bound data like so:
+
+    ```html
+    <div id="myobjects">
+        <div data-bind="template: { name: 'myTemplate', foreach: myobjects }"></div>   
+    </div>
     ```
 
 Simple Usage
