@@ -86,6 +86,7 @@ Quick start
 4. Knockout your QuerySet:
 
     ```html   
+    {% load knockout %}
     <script>
         {{ myObjects|knockout }}
     </script>
