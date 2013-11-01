@@ -202,7 +202,7 @@ Multi-Model Support
 django-knockout is all ready set up to be used with multiple types of data at the same time, as bindings happen to specific objects:
 
 ```javascript
-ko.applyBindings(new MyObjectViewModel(), $('#myobjects'));
+ko.applyBindings(new MyObjectViewModel(), $('#myobjects')[0]);
 ```
 
 which means that you somewhere in your HTML template, you will need to have an object with that id, like so:
