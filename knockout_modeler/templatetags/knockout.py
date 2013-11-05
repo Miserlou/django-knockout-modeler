@@ -10,6 +10,9 @@ def knockout(values):
     Knockoutify a QuerySet!
     """
 
+    if not values:
+        return ''
+        
     field_names = get_fields(values[0])
     return ko(values, field_names)
 
@@ -17,6 +20,8 @@ def knockout_data(values):
     """
 
     """
+    if not values:
+        return ''
 
     field_names = get_fields(values[0])
     return koData(values, field_names)
@@ -25,6 +30,8 @@ def knockout_model(values):
     """
 
     """
+    if not values:
+        return ''
 
     modelClass = values[0].__class__
     field_names = get_fields(values[0])
@@ -34,6 +41,8 @@ def knockout_bindings(values):
     """
 
     """
+    if not values:
+        return ''
 
     return koBindings(values[0])
 

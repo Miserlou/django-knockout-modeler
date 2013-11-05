@@ -21,63 +21,76 @@ def get_fields(model):
 
 def koModel(model, field_names=None, data=None):
 
-    if type(model) == str:
-        modelName = model
-    else:
-        modelName = model.__name__
+    try:
+        if type(model) == str:
+            modelName = model
+        else:
+            modelName = model.__name__
 
-    if field_names:
-        fields = field_names
-    else:
-        fields = get_fields(model)
+        if field_names:
+            fields = field_names
+        else:
+            fields = get_fields(model)
 
-    if hasattr(model, "comparator"):
-        comparator = str(model.comparator())
-    else:
-        comparator = 'id' 
+        if hasattr(model, "comparator"):
+            comparator = str(model.comparator())
+        else:
+            comparator = 'id' 
 
-    modelViewString = render_to_string("knockout_modeler/model.html", {'modelName': modelName, 'fields': fields, 'data': data, 'comparator': comparator} )
+        modelViewString = render_to_string("knockout_modeler/model.html", {'modelName': modelName, 'fields': fields, 'data': data, 'comparator': comparator} )
 
-    return modelViewString
+        return modelViewString
+    except Exception, e:
+        return ''
 
 def koBindings(model):
 
-    if type(model) == str:
-        modelName = model
-    else:
-        modelName = model.__class__.__name__
+    try:
+        if type(model) == str:
+            modelName = model
+        else:
+            modelName = model.__class__.__name__
 
-    modelBindingsString = "ko.applyBindings(new " + modelName + "ViewModel(), $('#" + modelName.lower() + "s')[0]);"
-    return modelBindingsString
+        modelBindingsString = "ko.applyBindings(new " + modelName + "ViewModel(), $('#" + modelName.lower() + "s')[0]);"
+        return modelBindingsString
+
+    except Exception, e:
+        return ''
 
 def koData(queryset, field_names):
 
-    modelName = queryset[0].__class__.__name__    
-    modelNameData = []
+    try:
+        modelName = queryset[0].__class__.__name__    
+        modelNameData = []
 
-    if field_names:
-        fields = field_names
-    else:
-        fields = get_fields(model)
+        if field_names:
+            fields = field_names
+        else:
+            fields = get_fields(model)
 
-    for obj in queryset:
-        temp_dict = dict()
-        for field in fields:
-            try:
-                temp_dict[field] = getattr(obj, str(field))
-            except Exception, e:
-                continue
-        modelNameData.append(temp_dict)
+        for obj in queryset:
+            temp_dict = dict()
+            for field in fields:
+                try:
+                    temp_dict[field] = getattr(obj, str(field))
+                except Exception, e:
+                    continue
+            modelNameData.append(temp_dict)
 
-    dthandler = lambda obj: obj.isoformat() if isinstance(obj, datetime.datetime)  or isinstance(obj, datetime.date) else None
-    return "var " + modelName + "Data = " + json.dumps(modelNameData, default=dthandler) + ';'
+        dthandler = lambda obj: obj.isoformat() if isinstance(obj, datetime.datetime)  or isinstance(obj, datetime.date) else None
+        return "var " + modelName + "Data = " + json.dumps(modelNameData, default=dthandler) + ';'
+    except Exception, e:
+        return ''
 
 def ko(queryset, field_names):
 
-    koDataString = koData(queryset, field_names)
-    koModelString = koModel(queryset[0].__class__.__name__, field_names, data=True)
-    koBindingsString = koBindings(queryset[0])
+    try:
+        koDataString = koData(queryset, field_names)
+        koModelString = koModel(queryset[0].__class__.__name__, field_names, data=True)
+        koBindingsString = koBindings(queryset[0])
 
-    koString = koDataString + '\n' + koModelString + '\n' + koBindingsString
+        koString = koDataString + '\n' + koModelString + '\n' + koBindingsString
 
-    return koString
+        return koString
+    except Exception, e:
+        return ''
