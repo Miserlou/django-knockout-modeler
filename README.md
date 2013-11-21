@@ -217,6 +217,15 @@ which means that you somewhere in your HTML template, you will need to have an o
 
 This is handy for prototyping, but more advanced applications may want to use the [master ViewModel](http://stackoverflow.com/a/9294752/1135467) technique instead.
 
+Multi-Data Support
+----------
+
+If you're using multiple QuerySets of the same type, you'll need to define a custom name for the data variables.
+
+```django
+{{ myObjects | knockout_data:'MyNamedObjectsData' }}
+```
+
 Issues
 -------
 

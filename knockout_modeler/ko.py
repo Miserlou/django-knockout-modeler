@@ -57,7 +57,7 @@ def koBindings(model):
     except Exception, e:
         return ''
 
-def koData(queryset, field_names):
+def koData(queryset, field_names, name=None):
 
     try:
         modelName = queryset[0].__class__.__name__    
@@ -77,8 +77,13 @@ def koData(queryset, field_names):
                     continue
             modelNameData.append(temp_dict)
 
+        if name:
+            modelNameString = name
+        else:
+            modelNameString = modelName + "Data"
+
         dthandler = lambda obj: obj.isoformat() if isinstance(obj, datetime.datetime)  or isinstance(obj, datetime.date) else None
-        return "var " + modelName + "Data = " + json.dumps(modelNameData, default=dthandler) + ';'
+        return "var " + modelNameString + " = " + json.dumps(modelNameData, default=dthandler) + ';'
     except Exception, e:
         return ''
 

@@ -16,7 +16,7 @@ def knockout(values):
     field_names = get_fields(values[0])
     return ko(values, field_names)
 
-def knockout_data(values):
+def knockout_data(values, name=None):
     """
 
     """
@@ -24,7 +24,7 @@ def knockout_data(values):
         return ''
 
     field_names = get_fields(values[0])
-    return koData(values, field_names)
+    return koData(values, field_names, name)
 
 def knockout_model(values):
     """
