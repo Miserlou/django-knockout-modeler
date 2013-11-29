@@ -10,8 +10,7 @@ setup(
     name='django-knockout-modeler',
     version='0.6.0',
     packages=['knockout_modeler'],
-    install_requires=[
-    ],
+    install_requires=['simplejson'],
     include_package_data=True,
     license='MIT License',
     description='Super easy ModelViews for knockout.js for your Django models',

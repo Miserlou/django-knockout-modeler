@@ -73,7 +73,7 @@ Quick start
     ```python
     INSTALLED_APPS = (
       ...
-      'knockout-modeler',
+      'knockout_modeler',
     )
     ```
 
