@@ -1,4 +1,5 @@
 from django.template.loader import render_to_string
+import cgi
 import simplejson as json
 import datetime
 
@@ -72,7 +73,10 @@ def koData(queryset, field_names, name=None):
             temp_dict = dict()
             for field in fields:
                 try:
-                    temp_dict[field] = getattr(obj, str(field))
+                    attribute = getattr(obj, str(field))
+                    if isinstance(attribute, basestring):
+                        attribute = cgi.escape(attribute)
+                    temp_dict[field] = attribute
                 except Exception, e:
                     continue
             modelNameData.append(temp_dict)
