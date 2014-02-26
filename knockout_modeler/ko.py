@@ -58,7 +58,7 @@ def koBindings(model):
     except Exception, e:
         return ''
 
-def koData(queryset, field_names, name=None):
+def koData(queryset, field_names, name=None, safe=False):
 
     try:
         modelName = queryset[0].__class__.__name__    
@@ -74,8 +74,11 @@ def koData(queryset, field_names, name=None):
             for field in fields:
                 try:
                     attribute = getattr(obj, str(field))
-                    if isinstance(attribute, basestring):
-                        attribute = cgi.escape(attribute)
+
+                    if not safe:
+                        if isinstance(attribute, basestring):
+                            attribute = cgi.escape(attribute)
+
                     temp_dict[field] = attribute
                 except Exception, e:
                     continue

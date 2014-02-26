@@ -226,6 +226,12 @@ If you're using multiple QuerySets of the same type, you'll need to define a cus
 {{ myObjects | knockout_data:'MyNamedObjectsData' }}
 ```
 
+You may also pass the string ",safe" to indicate that data has been sanitized. You must also use the 'safe' template tag:
+
+```django
+{{ myObjects | knockout_data:'MyNamedObjectsData,safe'|safe }}
+```
+
 Issues
 -------
 
