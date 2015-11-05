@@ -1,9 +1,18 @@
 from django.template.loader import render_to_string
 import cgi
-import simplejson as json
+try:
+    import simplejson as json
+except ImportError, e:
+    import json
 import datetime
 
+import logging
+logger = logging.getLogger(__name__)
+
 def get_fields(model):
+    """
+
+    """
 
     try:
         if hasattr(model, "knockout_fields"):
@@ -18,15 +27,19 @@ def get_fields(model):
 
     # Crash proofing
     except Exception, e:
+        logger.error(e)
         return []
 
-def koModel(model, field_names=None, data=None):
+def ko_model(model, field_names=None, data=None):
+    """
+
+    """
 
     try:
         if type(model) == str:
             modelName = model
         else:
-            modelName = model.__name__
+            modelName = model.__class__.__name__
 
         if field_names:
             fields = field_names
@@ -42,9 +55,13 @@ def koModel(model, field_names=None, data=None):
 
         return modelViewString
     except Exception, e:
+        logger.error(e)
         return ''
 
-def koBindings(model):
+def ko_bindings(model):
+    """
+
+    """
 
     try:
         if type(model) == str:
@@ -56,12 +73,19 @@ def koBindings(model):
         return modelBindingsString
 
     except Exception, e:
+        logger.error(e)
         return ''
 
-def koJSON(queryset, field_names=None, name=None, safe=False):
-    return koData(queryset, field_names, name, safe, return_json=True)
+def ko_json(queryset, field_names=None, name=None, safe=False):
+    """
 
-def koData(queryset, field_names=None, name=None, safe=False, return_json=False):
+    """
+    return ko_data(queryset, field_names, name, safe, return_json=True)
+
+def ko_data(queryset, field_names=None, name=None, safe=False, return_json=False):
+    """
+
+    """
 
     try:
         modelName = queryset[0].__class__.__name__    
@@ -70,7 +94,7 @@ def koData(queryset, field_names=None, name=None, safe=False, return_json=False)
         if field_names is not None:
             fields = field_names
         else:
-            fields = get_fields(model)
+            fields = get_fields(queryset[0])
 
         for obj in queryset:
             temp_dict = dict()
@@ -98,17 +122,22 @@ def koData(queryset, field_names=None, name=None, safe=False, return_json=False)
             return dumped_json
         return "var " + modelNameString + " = " + dumped_json + ';'
     except Exception, e:
+        logger.error(e)
         return ''
 
-def ko(queryset, field_names):
+def ko(queryset, field_names=None):
+    """
+    
+    """
 
     try:
-        koDataString = koData(queryset, field_names)
-        koModelString = koModel(queryset[0].__class__.__name__, field_names, data=True)
-        koBindingsString = koBindings(queryset[0])
+        koDataString = ko_data(queryset, field_names)
+        koModelString = ko_model(queryset[0].__class__.__name__, field_names, data=True)
+        koBindingsString = ko_bindings(queryset[0])
 
         koString = koDataString + '\n' + koModelString + '\n' + koBindingsString
 
         return koString
     except Exception, e:
+        logger.error(e)
         return ''

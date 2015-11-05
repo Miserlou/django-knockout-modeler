@@ -1,7 +1,10 @@
 from django import template
-import simplejson as json
+try:
+    import simplejson as json
+except ImportError, e:
+    import json
 import datetime
-from knockout_modeler.ko import ko, koData, koModel, koBindings, get_fields
+from knockout_modeler.ko import ko, ko_data, ko_model, ko_bindings, get_fields
 
 register = template.Library()
 
@@ -35,7 +38,7 @@ def knockout_data(values, args=None):
         name = arg_list[0]
 
     field_names = get_fields(values[0])
-    return koData(values, field_names, name, safe)
+    return ko_data(values, field_names, name, safe)
 
 def knockout_model(values):
     """
@@ -44,9 +47,9 @@ def knockout_model(values):
     if not values:
         return ''
 
-    modelClass = values[0].__class__
     field_names = get_fields(values[0])
-    return koModel(modelClass, field_names)
+    modelClass = values[0].__class__
+    return ko_model(modelClass, field_names)
 
 def knockout_bindings(values):
     """
@@ -55,7 +58,7 @@ def knockout_bindings(values):
     if not values:
         return ''
 
-    return koBindings(values[0])
+    return ko_bindings(values[0])
 
 register.filter(knockout)
 register.filter(knockout_data)

@@ -144,37 +144,38 @@ Progammatic Usage
 First, import it!
 
 ```python
-from knockout_modeler.ko import ko, koData, koModel
+from knockout_modeler.ko import ko, ko_data, ko_model, ko_json, ko_data
 ```
 
 To get the whole template, you can do this:
 
 ```python
-koString = ko(YourModel)
+ko_s = ko(your_query_set)
 ```
 
 And to get just the data string you can do this..
 
 ```python
-koString = koData(YourModel)
+ko_s = ko_data(your_query_set)
 ```
 
 or..
 
 ```python
-koJson = koJson(YourModel)
+ko_s = ko_json(your_query_set)
 ```
 
 And, surprisingly, you can do the same for the model string:
 
 ```python
-koString = koModel(YourModel)
+ko_s = ko_model(YourModel)
 ```
 
 Custom fieldsets are also allowed:
+
 ```python
 fields = ['custom', 'fieldset', 'allowed']
-koString = ko(entries, fields)
+ko_s= ko(entries, fields)
 ```
 
 Access Control
