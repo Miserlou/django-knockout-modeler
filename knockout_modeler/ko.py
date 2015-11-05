@@ -67,7 +67,7 @@ def koData(queryset, field_names=None, name=None, safe=False, return_json=False)
         modelName = queryset[0].__class__.__name__    
         modelNameData = []
 
-        if field_names:
+        if field_names is not None:
             fields = field_names
         else:
             fields = get_fields(model)
