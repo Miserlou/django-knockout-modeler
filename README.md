@@ -1,6 +1,6 @@
 ![Django knockout!](http://i.imgur.com/Nf7Vxq6.gif)
 
-django-knockout-modeler [![Build Status](https://travis-ci.org/Miserlou/django-knockout-modeler.svg)](https://travis-ci.org/Miserlou/django-knockout-modeler)
+django-knockout-modeler [![Build Status](https://travis-ci.org/Miserlou/django-knockout-modeler.svg)](https://travis-ci.org/Miserlou/django-knockout-modeler) [![PyPI](https://img.shields.io/pypi/dm/django-knockout-modeler.svg?style=flat)](https://pypi.python.org/pypi/django-knockout-modeler/)
 ==============
 
 **django-knockout-modeler** makes it super easy to use knockout.js with your Django models. It's great for project with objects that have lots of different models, or models with lots of different fields, or both. It can be used in both prototyping complex applications and directly in the templates of simple ones.
