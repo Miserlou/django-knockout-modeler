@@ -159,6 +159,12 @@ And to get just the data string you can do this..
 koString = koData(YourModel)
 ```
 
+or..
+
+```python
+koJson = koJson(YourModel)
+```
+
 And, surprisingly, you can do the same for the model string:
 
 ```python

@@ -58,7 +58,10 @@ def koBindings(model):
     except Exception, e:
         return ''
 
-def koData(queryset, field_names, name=None, safe=False):
+def koJSON(queryset, field_names=None, name=None, safe=False):
+    return koData(queryset, field_names, name, safe, return_json=True)
+
+def koData(queryset, field_names=None, name=None, safe=False, return_json=False):
 
     try:
         modelName = queryset[0].__class__.__name__    
@@ -90,7 +93,10 @@ def koData(queryset, field_names, name=None, safe=False):
             modelNameString = modelName + "Data"
 
         dthandler = lambda obj: obj.isoformat() if isinstance(obj, datetime.datetime)  or isinstance(obj, datetime.date) else None
-        return "var " + modelNameString + " = " + json.dumps(modelNameData, default=dthandler) + ';'
+        dumped_json = json.dumps(modelNameData, default=dthandler)
+        if return_json:
+            return dumped_json
+        return "var " + modelNameString + " = " + dumped_json + ';'
     except Exception, e:
         return ''
 
