@@ -72,7 +72,7 @@ class KnockoutTests(TestCase):
         wayne = self.setup_user()
         people = Person.objects.all()
 
-        model = ko_model(people)
+        model = ko_model(wayne)
         self.assertNotEqual(model, '')
 
     @Person.fake_me

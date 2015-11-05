@@ -5,4 +5,4 @@ DATABASES = {
     }
 }
 SECRET_KEY = "secret_key_for_testing"
-
+INSTALLED_APPS = ['knockout_modeler']

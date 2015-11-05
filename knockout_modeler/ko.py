@@ -27,7 +27,7 @@ def get_fields(model):
 
     # Crash proofing
     except Exception, e:
-        logger.error(e)
+        logger.exception(e)
         return []
 
 def ko_model(model, field_names=None, data=None):
@@ -55,7 +55,7 @@ def ko_model(model, field_names=None, data=None):
 
         return modelViewString
     except Exception, e:
-        logger.error(e)
+        logger.exception(e)
         return ''
 
 def ko_bindings(model):
@@ -122,12 +122,12 @@ def ko_data(queryset, field_names=None, name=None, safe=False, return_json=False
             return dumped_json
         return "var " + modelNameString + " = " + dumped_json + ';'
     except Exception, e:
-        logger.error(e)
+        logger.exception(e)
         return ''
 
 def ko(queryset, field_names=None):
     """
-    
+
     """
 
     try:
