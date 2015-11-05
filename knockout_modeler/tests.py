@@ -18,6 +18,7 @@ from knockout_modeler.ko import ko
 from knockout_modeler.templatetags import knockout
 
 import json
+import js2py
 
 class Person(f.FakeModel):
     """
@@ -75,6 +76,8 @@ class KnockoutTests(TestCase):
         model = ko_model(wayne)
         self.assertNotEqual(model, '')
 
+        interpreted = js2py.eval_js(model)
+
     @Person.fake_me
     def test_ko_bindings(self):
         """
@@ -111,6 +114,20 @@ class KnockoutTests(TestCase):
 
         data = ko_data(people)
         self.assertNotEqual(data, '')
+
+        interpreted = js2py.eval_js(data)
+
+    @Person.fake_me
+    def test_ko(self):
+        """
+        Tests ko
+        """
+
+        wayne = self.setup_user()
+        people = Person.objects.all()
+
+        ko_s = ko(people)
+        self.assertNotEqual(ko_s, '')
 
     @Person.fake_me
     def test_ko_tags(self):

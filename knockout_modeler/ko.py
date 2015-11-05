@@ -11,7 +11,8 @@ logger = logging.getLogger(__name__)
 
 def get_fields(model):
     """
-
+    Returns a Model's knockout_fields,
+    or the default set of field names.
     """
 
     try:
@@ -32,7 +33,8 @@ def get_fields(model):
 
 def ko_model(model, field_names=None, data=None):
     """
-
+    Given a model, returns the Knockout Model and the Knockout ViewModel.
+    Takes optional field names and data.
     """
 
     try:
@@ -60,7 +62,7 @@ def ko_model(model, field_names=None, data=None):
 
 def ko_bindings(model):
     """
-
+    Given a model, returns the Knockout data bindings.
     """
 
     try:
@@ -78,12 +80,18 @@ def ko_bindings(model):
 
 def ko_json(queryset, field_names=None, name=None, safe=False):
     """
+    Given a QuerySet, return just the serialized representation
+    based on the knockout_fields. Useful for middleware/APIs.
+
+    Convenience method around ko_data.
 
     """
     return ko_data(queryset, field_names, name, safe, return_json=True)
 
 def ko_data(queryset, field_names=None, name=None, safe=False, return_json=False):
     """
+    Given a QuerySet, return just the serialized representation
+    based on the knockout_fields as JavaScript.
 
     """
 
@@ -127,7 +135,7 @@ def ko_data(queryset, field_names=None, name=None, safe=False, return_json=False
 
 def ko(queryset, field_names=None):
     """
-
+    Converts a Django QuerySet into a complete Knockout implementation.
     """
 
     try:
