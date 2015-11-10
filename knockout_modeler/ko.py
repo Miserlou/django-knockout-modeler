@@ -137,8 +137,13 @@ def ko_data(queryset, field_names=None, name=None, safe=False, return_json=False
             queryset_instance = queryset
             queryset = [queryset]
         except IndexError, e:
-            # This is an empty QS - get the model directly.
-            queryset_instance = queryset.model
+            if not isinstance(queryset, list):
+                # This is an empty QS - get the model directly.
+                queryset_instance = queryset.model
+            else:
+                # We have been given an empty list.
+                # Return nothing.
+                return ''
 
         modelName = queryset_instance.__class__.__name__    
         modelNameData = []

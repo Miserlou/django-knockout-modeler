@@ -184,6 +184,16 @@ class KnockoutTests(TestCase):
         self.assertNotEqual(data, '')
         interpreted = js2py.eval_js(data)
 
+        rapper = ''
+        data = ko_data(rapper)
+        self.assertEqual(data, '')
+        interpreted = js2py.eval_js(data)
+
+        rapper = []
+        data = ko_data(rapper)
+        self.assertEqual(data, '')
+        interpreted = js2py.eval_js(data)
+
         # Test an invididual object
         rapper = wayne.profession
         data = ko_data(rapper)
