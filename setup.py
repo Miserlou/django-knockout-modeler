@@ -17,9 +17,9 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-knockout-modeler',
-    version='0.8.1',
+    version='0.9.0',
     packages=['knockout_modeler'],
-    install_requires=['simplejson'],
+    install_requires=required,
     include_package_data=True,
     license='MIT License',
     description='Super easy ModelViews for knockout.js for your Django models',

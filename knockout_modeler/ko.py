@@ -53,7 +53,7 @@ def ko_model(model, field_names=None, data=None):
         else:
             comparator = 'id' 
 
-        modelViewString = render_to_string("knockout_modeler/model.html", {'modelName': modelName, 'fields': fields, 'data': data, 'comparator': comparator} )
+        modelViewString = render_to_string("knockout_modeler/model.js", {'modelName': modelName, 'fields': fields, 'data': data, 'comparator': comparator} )
 
         return modelViewString
     except Exception, e:
