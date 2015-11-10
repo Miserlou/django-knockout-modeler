@@ -48,7 +48,7 @@ def get_object_data(obj, fields, safe):
                 attribute = getattr(obj, str(field))
                 if isinstance(attribute, dict) or isinstance(attribute, models.Model) or isinstance(attribute, fake_models.FakeModel):
                     attribute_fields = get_fields(attribute)
-                    object_data = get_object_data(attribute, attribute_fields, safe)
+                    object_data = get_object_data(attribute, attribute_fields, safe) # Recur
                     temp_dict[field] = object_data
                 else:
                     if not safe:
@@ -128,14 +128,17 @@ def ko_data(queryset, field_names=None, name=None, safe=False, return_json=False
     """
 
     try:
-
         try:
+            # Get an inital instance of the QS.
             queryset_instance = queryset[0]
         except TypeError, e:
             # We are being passed an object rather than a QuerySet.
             # That's naughty, but we'll survive.
             queryset_instance = queryset
             queryset = [queryset]
+        except IndexError, e:
+            # This is an empty QS - get the model directly.
+            queryset_instance = queryset.model
 
         modelName = queryset_instance.__class__.__name__    
         modelNameData = []
@@ -161,8 +164,6 @@ def ko_data(queryset, field_names=None, name=None, safe=False, return_json=False
             return dumped_json
         return "var " + modelNameString + " = " + dumped_json + ';'
     except Exception, e:
-        print e
-        print type(e)
         logger.exception(e)
         return ''
 
