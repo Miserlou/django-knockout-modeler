@@ -1,4 +1,7 @@
+from django.db import models
 from django.template.loader import render_to_string
+from django_fake_model import models as fake_models
+
 import cgi
 try:
     import simplejson as json
@@ -8,6 +11,7 @@ import datetime
 
 import logging
 logger = logging.getLogger(__name__)
+logger.addHandler(logging.NullHandler())
 
 def get_fields(model):
     """
@@ -23,13 +27,41 @@ def get_fields(model):
                 fields = model.to_dict().keys()
             except Exception, e:
                 fields = model._meta.get_all_field_names()
-
         return fields
 
     # Crash proofing
     except Exception, e:
         logger.exception(e)
         return []
+
+def get_object_data(obj, fields, safe):
+    """
+    Given an object and a list of fields, recursively build an object for serialization.
+
+    Returns a dictionary.
+    """
+
+    temp_dict = dict()
+    for field in fields:
+
+            try:
+                attribute = getattr(obj, str(field))
+                if isinstance(attribute, dict) or isinstance(attribute, models.Model) or isinstance(attribute, fake_models.FakeModel):
+                    attribute_fields = get_fields(attribute)
+                    object_data = get_object_data(attribute, attribute_fields, safe)
+                    temp_dict[field] = object_data
+                else:
+                    if not safe:
+                        if isinstance(attribute, basestring):
+                            attribute = cgi.escape(attribute)
+                    temp_dict[field] = attribute
+
+            except Exception, e:
+                logger.info("Unable to get attribute.")
+                logger.error(e)
+                continue
+
+    return temp_dict
 
 def ko_model(model, field_names=None, data=None):
     """
@@ -96,28 +128,26 @@ def ko_data(queryset, field_names=None, name=None, safe=False, return_json=False
     """
 
     try:
-        modelName = queryset[0].__class__.__name__    
+
+        try:
+            queryset_instance = queryset[0]
+        except TypeError, e:
+            # We are being passed an object rather than a QuerySet.
+            # That's naughty, but we'll survive.
+            queryset_instance = queryset
+            queryset = [queryset]
+
+        modelName = queryset_instance.__class__.__name__    
         modelNameData = []
 
         if field_names is not None:
             fields = field_names
         else:
-            fields = get_fields(queryset[0])
+            fields = get_fields(queryset_instance)
 
         for obj in queryset:
-            temp_dict = dict()
-            for field in fields:
-                try:
-                    attribute = getattr(obj, str(field))
-
-                    if not safe:
-                        if isinstance(attribute, basestring):
-                            attribute = cgi.escape(attribute)
-
-                    temp_dict[field] = attribute
-                except Exception, e:
-                    continue
-            modelNameData.append(temp_dict)
+            object_data = get_object_data(obj, fields, safe)
+            modelNameData.append(object_data)
 
         if name:
             modelNameString = name
@@ -126,10 +156,13 @@ def ko_data(queryset, field_names=None, name=None, safe=False, return_json=False
 
         dthandler = lambda obj: obj.isoformat() if isinstance(obj, datetime.datetime)  or isinstance(obj, datetime.date) else None
         dumped_json = json.dumps(modelNameData, default=dthandler)
+
         if return_json:
             return dumped_json
         return "var " + modelNameString + " = " + dumped_json + ';'
     except Exception, e:
+        print e
+        print type(e)
         logger.exception(e)
         return ''
 
