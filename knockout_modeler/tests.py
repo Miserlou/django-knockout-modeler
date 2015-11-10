@@ -168,7 +168,7 @@ class KnockoutTests(TestCase):
         people = Person.objects.all()
 
         data = ko_data(people)
-        self.assertNotEqual(data, '')
+        self.assertNotEqual(data, '[]')
 
         # Will raise if invalid.
         interpreted = js2py.eval_js(data)
@@ -176,28 +176,28 @@ class KnockoutTests(TestCase):
         # Test a vanilla QS
         rapper = Profession.objects.get(pk=1)
         data = ko_data(rapper)
-        self.assertNotEqual(data, '')
+        self.assertNotEqual(data, '[]')
         interpreted = js2py.eval_js(data)
 
         rapper = Profession.objects.none()
         data = ko_data(rapper)
-        self.assertNotEqual(data, '')
+        self.assertNotEqual(data, '[]')
         interpreted = js2py.eval_js(data)
 
         rapper = ''
         data = ko_data(rapper)
-        self.assertEqual(data, '')
+        self.assertEqual(data, '[]')
         interpreted = js2py.eval_js(data)
 
         rapper = []
         data = ko_data(rapper)
-        self.assertEqual(data, '')
+        self.assertEqual(data, '[]')
         interpreted = js2py.eval_js(data)
 
         # Test an invididual object
         rapper = wayne.profession
         data = ko_data(rapper)
-        self.assertNotEqual(data, '')
+        self.assertNotEqual(data, '[]')
         interpreted = js2py.eval_js(data)
 
     @Profession.fake_me

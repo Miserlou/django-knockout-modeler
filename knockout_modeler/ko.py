@@ -143,7 +143,7 @@ def ko_data(queryset, field_names=None, name=None, safe=False, return_json=False
             else:
                 # We have been given an empty list.
                 # Return nothing.
-                return ''
+                return '[]'
 
         modelName = queryset_instance.__class__.__name__    
         modelNameData = []
@@ -170,7 +170,7 @@ def ko_data(queryset, field_names=None, name=None, safe=False, return_json=False
         return "var " + modelNameString + " = " + dumped_json + ';'
     except Exception, e:
         logger.exception(e)
-        return ''
+        return '[]'
 
 def ko(queryset, field_names=None):
     """
