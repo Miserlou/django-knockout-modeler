@@ -46,7 +46,11 @@ def get_object_data(obj, fields, safe):
 
             try:
                 attribute = getattr(obj, str(field))
-                if isinstance(attribute, dict) or isinstance(attribute, models.Model) or isinstance(attribute, fake_models.FakeModel):
+                if isinstance(attribute, list):
+                    temp_dict[field] = []
+                    for item in attribute:
+                        temp_dict[field].append(get_object_data(item, get_fields(item), safe)) # Recur
+                elif isinstance(attribute, dict) or isinstance(attribute, models.Model) or isinstance(attribute, fake_models.FakeModel):
                     attribute_fields = get_fields(attribute)
                     object_data = get_object_data(attribute, attribute_fields, safe) # Recur
                     temp_dict[field] = object_data
