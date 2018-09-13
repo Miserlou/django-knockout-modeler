@@ -26,7 +26,7 @@ def get_fields(model):
             try:
                 fields = model.to_dict().keys()
             except Exception, e:
-                fields = model._meta.get_all_field_names()
+                fields = model._meta.get_fields()
         return fields
 
     # Crash proofing
@@ -46,7 +46,12 @@ def get_object_data(obj, fields, safe):
 
             try:
                 attribute = getattr(obj, str(field))
-                if isinstance(attribute, dict) or isinstance(attribute, models.Model) or isinstance(attribute, fake_models.FakeModel):
+                if isinstance(attribute, list) and \
+                        all([isinstance(item, (dict, models.Model, fake_models.FakeModel)) for item in attribute]):
+                    temp_dict[field] = []
+                    for item in attribute:
+                        temp_dict[field].append(get_object_data(item, get_fields(item), safe)) # Recur
+                elif isinstance(attribute, (dict, models.Model, fake_models.FakeModel)):
                     attribute_fields = get_fields(attribute)
                     object_data = get_object_data(attribute, attribute_fields, safe) # Recur
                     temp_dict[field] = object_data
@@ -83,7 +88,7 @@ def ko_model(model, field_names=None, data=None):
         if hasattr(model, "comparator"):
             comparator = str(model.comparator())
         else:
-            comparator = 'id' 
+            comparator = 'id'
 
         modelViewString = render_to_string("knockout_modeler/model.js", {'modelName': modelName, 'fields': fields, 'data': data, 'comparator': comparator} )
 
@@ -145,7 +150,7 @@ def ko_data(queryset, field_names=None, name=None, safe=False, return_json=False
                 # Return nothing.
                 return '[]'
 
-        modelName = queryset_instance.__class__.__name__    
+        modelName = queryset_instance.__class__.__name__
         modelNameData = []
 
         if field_names is not None:
