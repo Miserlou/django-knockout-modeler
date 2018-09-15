@@ -4,7 +4,7 @@ from setuptools import setup
 # Set external files
 try:
     from pypandoc import convert
-    README = convert('README.md', 'rst')	 
+    README = convert('README.md', 'rst')
 except ImportError:
     README = open(os.path.join(os.path.dirname(__file__), 'README.md')).read()
     print("warning: pypandoc module not found, could not convert Markdown to RST")
@@ -17,7 +17,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-knockout-modeler',
-    version='0.11.0',
+    version='0.11.1',
     packages=['knockout_modeler'],
     install_requires=required,
     include_package_data=True,
