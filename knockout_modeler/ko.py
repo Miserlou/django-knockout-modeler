@@ -1,17 +1,19 @@
-from django.db import models
-from django.template.loader import render_to_string
-from django_fake_model import models as fake_models
-
 import cgi
+
+from django.db import models
+from django.forms.models import model_to_dict
+from django.template.loader import render_to_string
+
 try:
     import simplejson as json
-except ImportError, e:
+except ImportError as e:
     import json
 import datetime
 
 import logging
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
+
 
 def get_fields(model):
     """
@@ -24,15 +26,16 @@ def get_fields(model):
             fields = model.knockout_fields()
         else:
             try:
-                fields = model.to_dict().keys()
-            except Exception, e:
+                fields = model_to_dict(model).keys()
+            except Exception as e:
                 fields = model._meta.get_fields()
         return fields
 
     # Crash proofing
-    except Exception, e:
+    except Exception as e:
         logger.exception(e)
         return []
+
 
 def get_object_data(obj, fields, safe):
     """
@@ -44,29 +47,29 @@ def get_object_data(obj, fields, safe):
     temp_dict = dict()
     for field in fields:
 
-            try:
-                attribute = getattr(obj, str(field))
-                if isinstance(attribute, list) and \
-                        all([isinstance(item, (dict, models.Model, fake_models.FakeModel)) for item in attribute]):
-                    temp_dict[field] = []
-                    for item in attribute:
-                        temp_dict[field].append(get_object_data(item, get_fields(item), safe)) # Recur
-                elif isinstance(attribute, (dict, models.Model, fake_models.FakeModel)):
-                    attribute_fields = get_fields(attribute)
-                    object_data = get_object_data(attribute, attribute_fields, safe) # Recur
-                    temp_dict[field] = object_data
-                else:
-                    if not safe:
-                        if isinstance(attribute, basestring):
-                            attribute = cgi.escape(attribute)
-                    temp_dict[field] = attribute
+        try:
+            attribute = getattr(obj, str(field))
+            if isinstance(attribute, list) and all([isinstance(item, models.Model) for item in attribute]):
+                temp_dict[field] = []
+                for item in attribute:
+                    temp_dict[field].append(get_object_data(item, get_fields(item), safe))  # Recur
+            elif isinstance(attribute, models.Model):
+                attribute_fields = get_fields(attribute)
+                object_data = get_object_data(attribute, attribute_fields, safe)  # Recur
+                temp_dict[field] = object_data
+            else:
+                if not safe:
+                    if isinstance(attribute, basestring):
+                        attribute = cgi.escape(attribute)
+                temp_dict[field] = attribute
 
-            except Exception, e:
-                logger.info("Unable to get attribute.")
-                logger.error(e)
-                continue
+        except Exception as e:
+            logger.info("Unable to get attribute.")
+            logger.error(e)
+            continue
 
     return temp_dict
+
 
 def ko_model(model, field_names=None, data=None):
     """
@@ -75,7 +78,7 @@ def ko_model(model, field_names=None, data=None):
     """
 
     try:
-        if type(model) == str:
+        if isinstance(model, str):
             modelName = model
         else:
             modelName = model.__class__.__name__
@@ -90,12 +93,16 @@ def ko_model(model, field_names=None, data=None):
         else:
             comparator = 'id'
 
-        modelViewString = render_to_string("knockout_modeler/model.js", {'modelName': modelName, 'fields': fields, 'data': data, 'comparator': comparator} )
+        modelViewString = render_to_string(
+            "knockout_modeler/model.js",
+            {'modelName': modelName, 'fields': fields, 'data': data, 'comparator': comparator}
+        )
 
         return modelViewString
-    except Exception, e:
+    except Exception as e:
         logger.exception(e)
         return ''
+
 
 def ko_bindings(model):
     """
@@ -103,7 +110,7 @@ def ko_bindings(model):
     """
 
     try:
-        if type(model) == str:
+        if isinstance(model, str):
             modelName = model
         else:
             modelName = model.__class__.__name__
@@ -111,9 +118,10 @@ def ko_bindings(model):
         modelBindingsString = "ko.applyBindings(new " + modelName + "ViewModel(), $('#" + modelName.lower() + "s')[0]);"
         return modelBindingsString
 
-    except Exception, e:
+    except Exception as e:
         logger.error(e)
         return ''
+
 
 def ko_json(queryset, field_names=None, name=None, safe=False):
     """
@@ -124,6 +132,7 @@ def ko_json(queryset, field_names=None, name=None, safe=False):
 
     """
     return ko_data(queryset, field_names, name, safe, return_json=True)
+
 
 def ko_data(queryset, field_names=None, name=None, safe=False, return_json=False):
     """
@@ -136,12 +145,12 @@ def ko_data(queryset, field_names=None, name=None, safe=False, return_json=False
         try:
             # Get an inital instance of the QS.
             queryset_instance = queryset[0]
-        except TypeError, e:
+        except TypeError as e:
             # We are being passed an object rather than a QuerySet.
             # That's naughty, but we'll survive.
             queryset_instance = queryset
             queryset = [queryset]
-        except IndexError, e:
+        except IndexError as e:
             if not isinstance(queryset, list):
                 # This is an empty QS - get the model directly.
                 queryset_instance = queryset.model
@@ -167,15 +176,16 @@ def ko_data(queryset, field_names=None, name=None, safe=False, return_json=False
         else:
             modelNameString = modelName + "Data"
 
-        dthandler = lambda obj: obj.isoformat() if isinstance(obj, datetime.datetime)  or isinstance(obj, datetime.date) else None
+        dthandler = lambda obj: obj.isoformat() if isinstance(obj, (datetime.date, datetime.datetime)) else None
         dumped_json = json.dumps(modelNameData, default=dthandler)
 
         if return_json:
             return dumped_json
         return "var " + modelNameString + " = " + dumped_json + ';'
-    except Exception, e:
+    except Exception as e:
         logger.exception(e)
         return '[]'
+
 
 def ko(queryset, field_names=None):
     """
@@ -190,6 +200,6 @@ def ko(queryset, field_names=None):
         koString = koDataString + '\n' + koModelString + '\n' + koBindingsString
 
         return koString
-    except Exception, e:
+    except Exception as e:
         logger.error(e)
         return ''
