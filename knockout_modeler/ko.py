@@ -26,7 +26,7 @@ def get_fields(model):
             fields = model.knockout_fields()
         else:
             try:
-                fields = model_to_dict(model).keys()
+                fields = list(model_to_dict(model).keys())
             except Exception as e:
                 fields = model._meta.get_fields()
         return fields
@@ -59,7 +59,7 @@ def get_object_data(obj, fields, safe):
                 temp_dict[field] = object_data
             else:
                 if not safe:
-                    if isinstance(attribute, basestring):
+                    if isinstance(attribute, str):
                         attribute = cgi.escape(attribute)
                 temp_dict[field] = attribute
 

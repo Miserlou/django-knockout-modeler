@@ -50,8 +50,10 @@ class Person(f.FakeModel):
     last_name = models.CharField('Last Name', max_length=200, blank=True)
     uuid = models.CharField('UUID', max_length=200, blank=False, unique=True)
 
-    profession = models.ForeignKey(Profession, blank=True)
-    home_city = models.ForeignKey(HomeCity, blank=True)
+    profession = models.ForeignKey(
+        Profession, blank=True, on_delete=models.PROTECT)
+    home_city = models.ForeignKey(
+        HomeCity, blank=True, on_delete=models.PROTECT)
 
     class Meta:
         app_label = 'test'
@@ -126,7 +128,7 @@ class KnockoutTests(TransactionTestCase):
         expected = {
             'first_name': 'Lil',
             'home_city': {'name': 'New Orleans'},
-            'profession': {'skill': 999, u'id': 1, 'title': 'Rapper'},
+            'profession': {'skill': 999, 'id': 1, 'title': 'Rapper'},
         }
         actual = get_object_data(wayne, fields, safe=False)
         self.assertEqual(actual, expected)
@@ -137,8 +139,8 @@ class KnockoutTests(TransactionTestCase):
             'first_name': 'Lil',
             'home_city': {'name': 'New Orleans'},
             'home_city_dict': {'name': 'New Orleans'},
-            'profession': {'skill': 999, u'id': 2, 'title': 'Rapper'},
-            'profession_dict': {'skill': 999, u'id': 2, 'title': 'Rapper'},
+            'profession': {'skill': 999, 'id': 2, 'title': 'Rapper'},
+            'profession_dict': {'skill': 999, 'id': 2, 'title': 'Rapper'},
         }
         wayne.home_city_dict = expected['home_city']
         wayne.profession_dict = expected['profession']
@@ -151,10 +153,10 @@ class KnockoutTests(TransactionTestCase):
         expected = {
             'first_name': 'Lil',
             'home_city': {'name': 'New Orleans'},
-            'profession': {'skill': 999, u'id': 3, 'title': 'Rapper'},
+            'profession': {'skill': 999, 'id': 3, 'title': 'Rapper'},
             'list_of_dicts': [
                 {'name': 'New Orleans'},
-                {'skill': 999, u'id': 3, 'title': 'Rapper'},
+                {'skill': 999, 'id': 3, 'title': 'Rapper'},
             ],
         }
         wayne.list_of_dicts = [expected['home_city'], expected['profession']]
@@ -167,11 +169,11 @@ class KnockoutTests(TransactionTestCase):
         expected = {
             'first_name': 'Lil',
             'home_city': {'name': 'New Orleans'},
-            'profession': {'skill': 999, u'id': 4, 'title': 'Rapper'},
+            'profession': {'skill': 999, 'id': 4, 'title': 'Rapper'},
             'list_of_models': [{
                 'first_name': 'Lil',
                 'home_city': {'name': 'New Orleans'},
-                'profession': {'skill': 999, u'id': 5, 'title': 'Rapper'},
+                'profession': {'skill': 999, 'id': 5, 'title': 'Rapper'},
             }],
         }
         wayne.list_of_models = [self.setup_user()]
